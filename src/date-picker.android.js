@@ -237,6 +237,7 @@ export default class DatePicker extends PureComponent {
     const maxHours = use12Hours ? 12 : 23;
     const minHours = use12Hours ? 1 : 0;
     let initialHours = this.state.date.getHours();
+    if(initialHours === 0) initialHours = 12;
     if (use12Hours && initialHours > 12) initialHours -= 12;
 
     for (let i = minHours; i <= maxHours; i += 1) {
