@@ -146,12 +146,9 @@ export default class DatePicker extends PureComponent {
   onMonthChange = (month) => {
     month = this.monthNameToMonthNumber(month);
 
-    console.log(this.newValue.month)
-    const oldMonth = this.newValue.month + 1;    
-    
-    this.newValue.month = month;
-    // console.log(this.newValue.month, oldMonth);
-    // this.checkDate(this.newValue.year, oldMonth);
+    const oldMonth = this.newValue.month + 1;
+    this.newValue.month = month - 1;
+    this.checkDate(this.newValue.year, oldMonth);
     this.props.onDateChange(this.getValue());
 
     /////////// OLD CODE
@@ -246,7 +243,7 @@ export default class DatePicker extends PureComponent {
               {...propsStyles}
               style={this.props.style}
               ref={(month) => { this.monthComponent = month; }}
-              selectedValue={months[this.state.date.getMonth() + 1]}
+              selectedValue={months[this.state.date.getMonth()]}
               pickerData={this.state.monthRange}
               onValueChange={this.onMonthChange}
             />
