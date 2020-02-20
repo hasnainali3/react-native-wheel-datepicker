@@ -5,6 +5,7 @@ import moment from 'moment';
 import Picker from './picker';
 
 const ViewPropTypes = RNViewPropTypes || View.propTypes;
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep','Oct', 'Nov', 'Dec'];
 
 const styles = StyleSheet.create({
   picker: {
@@ -76,8 +77,8 @@ export default class DatePicker extends PureComponent {
     const minYear = minimumDate.getFullYear();
     const maxYear = maximumDate.getFullYear();
 
-    for (let i = 1; i <= 12; i += 1) {
-      this.state.monthRange.push({ value: i, label: `${i}${labelUnit.month}` });
+    for (let i = 0; i <= 11; i += 1) {
+      this.state.monthRange.push({ value: months[i], label: `${months[i]}${labelUnit.month}` });
     }
 
     this.state.yearRange.push({ value: minYear, label: `${minYear}${labelUnit.year}` });
@@ -113,12 +114,52 @@ export default class DatePicker extends PureComponent {
     this.props.onDateChange(this.getValue());
   };
 
-  onMonthChange = (month) => {
-    const oldMonth = this.newValue.month;
+  monthNameToMonthNumber = (month) => {
+    switch(month) {
+      case 'Jan':
+        return 1;
+      case 'Feb':
+        return 2;
+      case 'Mar':
+        return 3;
+      case 'Apr':
+        return 4;
+      case 'May':
+        return 5;
+      case 'Jun':
+        return 6;
+      case 'Jul':
+        return 7;
+      case 'Aug':
+        return 8;
+      case 'Sep':
+        return 9;
+      case 'Oct':
+        return 10;
+      case 'Nov':
+        return 11;
+      case 'Dec':
+        return 12;
+    }
+  }
 
-    this.newValue.month = month - 1;
-    this.checkDate(this.newValue.year, oldMonth);
+  onMonthChange = (month) => {
+    month = this.monthNameToMonthNumber(month);
+
+    console.log(this.newValue.month)
+    const oldMonth = this.newValue.month + 1;    
+    
+    this.newValue.month = month;
+    // console.log(this.newValue.month, oldMonth);
+    // this.checkDate(this.newValue.year, oldMonth);
     this.props.onDateChange(this.getValue());
+
+    /////////// OLD CODE
+    // const oldMonth = this.newValue.month + 1;
+    
+    // this.newValue.month = month - 1;
+    // this.checkDate(this.newValue.year, oldMonth);
+    // this.props.onDateChange(this.getValue());
   };
 
   onDateChange = (date) => {
@@ -205,7 +246,7 @@ export default class DatePicker extends PureComponent {
               {...propsStyles}
               style={this.props.style}
               ref={(month) => { this.monthComponent = month; }}
-              selectedValue={this.state.date.getMonth() + 1}
+              selectedValue={months[this.state.date.getMonth() + 1]}
               pickerData={this.state.monthRange}
               onValueChange={this.onMonthChange}
             />
